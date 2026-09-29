@@ -1,29 +1,40 @@
 import { Platform } from "react-native";
 
-const NGROK_HOST = "pasture-palatable-resample.ngrok-free.dev";
-
 function getApiUrl(): string {
+  if (process.env.EXPO_PUBLIC_API_URL) {
+    return process.env.EXPO_PUBLIC_API_URL;
+  }
   if (
     Platform.OS === "web" &&
     typeof window !== "undefined" &&
-    (window.location?.hostname === "localhost" ||
-      window.location?.hostname === "127.0.0.1")
+    window.location?.origin
   ) {
-    return "http://localhost:3000";
+    return window.location.origin.includes("localhost") ||
+      window.location.origin.includes("127.0.0.1")
+      ? "http://localhost:3000"
+      : window.location.origin;
   }
-  return `https://${NGROK_HOST}`;
+  return "http://localhost:3000";
 }
 
 function getWsUrl(): string {
+  if (process.env.EXPO_PUBLIC_WS_URL) {
+    return process.env.EXPO_PUBLIC_WS_URL;
+  }
   if (
     Platform.OS === "web" &&
     typeof window !== "undefined" &&
-    (window.location?.hostname === "localhost" ||
-      window.location?.hostname === "127.0.0.1")
+    window.location?.hostname
   ) {
-    return "ws://localhost:3000/ws";
+    const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+    const host =
+      window.location.hostname === "localhost" ||
+      window.location.hostname === "127.0.0.1"
+        ? "localhost:3000"
+        : window.location.host;
+    return `${protocol}//${host}/ws`;
   }
-  return `wss://${NGROK_HOST}/ws?ngrok-skip-browser-warning=true`;
+  return "ws://localhost:3000/ws";
 }
 
 export const config = {
@@ -33,9 +44,7 @@ export const config = {
   get WS_URL() {
     return getWsUrl();
   },
-  // Max leads to keep in the list
   MAX_LIST_SIZE: 200,
-  // WebSocket reconnect backoff: starts at 1s, caps at 30s
   WS_RECONNECT_INITIAL_MS: 1000,
   WS_RECONNECT_MAX_MS: 30_000,
 } as const;

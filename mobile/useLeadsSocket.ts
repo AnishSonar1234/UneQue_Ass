@@ -43,15 +43,10 @@ export function useLeadsSocket(): UseLeadsSocketResult {
   // ─── fetchLeads ────────────────────────────────────────────────────────────
   const fetchLeads = useCallback(async (since?: string): Promise<Lead[] | null> => {
     try {
-      let url = since
+      const url = since
         ? `${config.API_URL}/leads?since=${encodeURIComponent(since)}`
         : `${config.API_URL}/leads`;
-      if (url.includes("ngrok")) {
-        url += `${url.includes("?") ? "&" : "?"}ngrok-skip-browser-warning=true`;
-      }
-      const res = await fetch(url, {
-        headers: { "ngrok-skip-browser-warning": "true" },
-      });
+      const res = await fetch(url);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       return (await res.json()) as Lead[];
     } catch (err) {
