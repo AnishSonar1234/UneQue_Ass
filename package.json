@@ -1,0 +1,8 @@
+{
+  "name": "meta-lead-ads-poc",
+  "private": true,
+  "scripts": {
+    "backend": "npm run dev --prefix backend",
+    "test": "npm test --prefix backend"
+  }
+}

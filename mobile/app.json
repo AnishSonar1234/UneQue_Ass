@@ -1,0 +1,25 @@
+{
+  "expo": {
+    "name": "Meta Live Leads",
+    "slug": "meta-live-leads",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "backgroundColor": "#0d0d1a"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.example.metaleads"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#0d0d1a"
+      },
+      "package": "com.example.metaleads"
+    },
+    "web": {
+      "bundler": "metro"
+    }
+  }
+}

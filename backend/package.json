@@ -1,0 +1,26 @@
+{
+  "name": "meta-lead-backend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Meta Lead Ads webhook backend with real-time WebSocket broadcast",
+  "main": "dist/server.js",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "test": "vitest run --config vitest.config.ts"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "ws": "^8.17.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.14.0",
+    "@types/ws": "^8.5.10",
+    "tsx": "^4.15.7",
+    "typescript": "^5.4.5",
+    "vitest": "^1.6.0"
+  }
+}
