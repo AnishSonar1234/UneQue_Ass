@@ -1,8 +1,16 @@
 import { Platform } from "react-native";
 
+function sanitizeUrl(url: string, defaultProtocol = "https"): string {
+  let cleaned = url.trim().replace(/\/+$/, "");
+  if (!cleaned.startsWith("http://") && !cleaned.startsWith("https://") && !cleaned.startsWith("ws://") && !cleaned.startsWith("wss://")) {
+    cleaned = `${defaultProtocol}://${cleaned}`;
+  }
+  return cleaned;
+}
+
 function getApiUrl(): string {
   if (process.env.EXPO_PUBLIC_API_URL) {
-    return process.env.EXPO_PUBLIC_API_URL;
+    return sanitizeUrl(process.env.EXPO_PUBLIC_API_URL, "https");
   }
   if (
     Platform.OS === "web" &&
@@ -12,14 +20,14 @@ function getApiUrl(): string {
     return window.location.origin.includes("localhost") ||
       window.location.origin.includes("127.0.0.1")
       ? "http://localhost:3000"
-      : window.location.origin;
+      : sanitizeUrl(window.location.origin, "https");
   }
   return "http://localhost:3000";
 }
 
 function getWsUrl(): string {
   if (process.env.EXPO_PUBLIC_WS_URL) {
-    return process.env.EXPO_PUBLIC_WS_URL;
+    return sanitizeUrl(process.env.EXPO_PUBLIC_WS_URL, "wss");
   }
   if (
     Platform.OS === "web" &&

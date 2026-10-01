@@ -38,17 +38,21 @@ async function bootstrap() {
   app.use(express.json());
 
   // Routes
+  app.get("/", (_req: Request, res: Response) => {
+    res.json({ status: "online", message: "Meta Lead Ads Backend Server", health: "/health", leads: "/leads" });
+  });
+
   app.use("/webhook", createWebhookRouter());
 
   // GET /leads
-  app.get("/leads", (req: Request, res: Response) => {
+  app.get(["/leads", "//leads"], (req: Request, res: Response) => {
     const since = req.query.since as string | undefined;
     const leads = getLeads(since);
     res.json(leads);
   });
 
   // GET /health
-  app.get("/health", (_req: Request, res: Response) => {
+  app.get(["/health", "//health"], (_req: Request, res: Response) => {
     res.json({ ok: true, clients: getClientCount() });
   });
 
