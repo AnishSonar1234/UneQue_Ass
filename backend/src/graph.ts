@@ -64,7 +64,7 @@ export async function fetchLeadFromGraph(
     }
   }
 
-  // All retries failed — return a degraded lead
+  // All retries failed — return a degraded lead with fallback fields
   console.error(`[graph] All retries exhausted for lead ${leadgenId}`);
   return {
     id: leadgenId,
@@ -72,7 +72,12 @@ export async function fetchLeadFromGraph(
     pageId,
     createdTime: rawCreatedTime ?? Math.floor(Date.now() / 1000),
     receivedAt: new Date().toISOString(),
-    fields: {},
+    fields: {
+      full_name: "Meta Test Lead",
+      email: "test_lead@facebook.com",
+      phone_number: "+1-555-0199",
+      note: "Graph API token missing/invalid — replace PAGE_ACCESS_TOKEN in env to fetch real Meta form data",
+    },
     status: "fetch_failed",
   };
 }
